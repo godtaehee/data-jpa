@@ -108,4 +108,34 @@ class MemberJpaRepositoryTest {
 
         assertEquals(afterUpdatedMember.getUsername(), "Updated Member");
     }
+
+    @Test
+    public void basicCRUDError() {
+        // Create
+        Member member1 = new Member("Member 1");
+        Member member2 = new Member("Member 2");
+
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
+
+        Member findMember1 = memberJpaRepository.findById(member1.getId()).orElseThrow();
+        Member findMember2 = memberJpaRepository.findById(member2.getId()).orElseThrow();
+
+        assertEquals(member1, findMember1);
+        assertEquals(member2, findMember2);
+
+        // Update
+        Member newMember1 = new Member(findMember1.getId(), "Updated Member", member1.getAge(), member1.getTeam());
+
+        //        System.out.println("Before " + member1);
+        //        memberJpaRepository.merge(newMember1);
+
+        //         Error
+        memberJpaRepository.save(newMember1);
+
+        Member afterUpdatedMember = memberJpaRepository.find(member1.getId());
+        System.out.println("After " + member1);
+
+        assertEquals(afterUpdatedMember.getUsername(), "Updated Member");
+    }
 }
