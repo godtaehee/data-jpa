@@ -2,6 +2,7 @@ package study.datajpa.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -111,6 +112,29 @@ class MemberRepositoryTest {
 
         for (MemberDto memberDto : memberDtos) {
             System.out.println(memberDto);
+        }
+    }
+
+    @Test
+    public void testFindByNames() {
+        Member member1 = new Member("Member 1", 20);
+        Member member2 = new Member("Member 2", 30);
+        Member member3 = new Member("Member 3", 30);
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+
+        //        List<String> nameList = new ArrayList<>();
+
+        //        nameList.add(member1.getUsername());
+        //        nameList.add(member3.getUsername());
+
+        //        List<Member> members = memberRepository.findByNames(nameList);
+        List<Member> members = memberRepository.findByNames(Arrays.asList(member1.getUsername(), member3.getUsername()));
+
+        for (Member member : members) {
+            System.out.println("member = " + member);
         }
     }
 }
