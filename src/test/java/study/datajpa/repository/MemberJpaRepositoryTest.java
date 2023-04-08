@@ -138,4 +138,17 @@ class MemberJpaRepositoryTest {
 
         assertEquals(afterUpdatedMember.getUsername(), "Updated Member");
     }
+
+    @Test
+    public void findByUserNameAndAgeGreaterThen() {
+        Member member1 = new Member("Member 1", 20);
+        Member member2 = new Member("Member 2", 30);
+
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
+
+        List<Member> byUserNameAndAgeGreaterThen = memberJpaRepository.findByUserNameAndAgeGreaterThen("Member 2", 25);
+
+        assertEquals(byUserNameAndAgeGreaterThen.size(), 1);
+    }
 }
