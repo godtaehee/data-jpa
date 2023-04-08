@@ -1,5 +1,6 @@
 package study.datajpa.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,5 +32,18 @@ class MemberRepositoryTest {
         Assertions.assertEquals(member.getId(), findMember.getId());
         Assertions.assertEquals(member.getUsername(), findMember.getUsername());
         Assertions.assertEquals(member, findMember);
+    }
+
+    @Test
+    public void findByUsernameAndAgeGreaterThan() {
+        Member memberA = new Member("MemberA", 20);
+        Member memberB = new Member("MemberB", 30);
+
+        Member savedMemberA = memberRepository.save(memberA);
+        Member savedMemberB = memberRepository.save(memberB);
+
+        List<Member> members = memberRepository.findByUsernameAndAgeGreaterThan("MemberB", 27);
+
+        Assertions.assertEquals(members.size(), 1);
     }
 }

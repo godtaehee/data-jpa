@@ -147,7 +147,7 @@ class MemberJpaRepositoryTest {
         memberJpaRepository.save(member1);
         memberJpaRepository.save(member2);
 
-        List<Member> byUserNameAndAgeGreaterThen = memberJpaRepository.findByUserNameAndAgeGreaterThen("Member 2", 25);
+        List<Member> byUserNameAndAgeGreaterThen = memberJpaRepository.findByUserNameAndAgeGreaterThan("Member 2", 25);
 
         assertEquals(byUserNameAndAgeGreaterThen.size(), 1);
     }
