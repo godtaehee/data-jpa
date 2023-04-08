@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
@@ -136,5 +139,40 @@ class MemberRepositoryTest {
         for (Member member : members) {
             System.out.println("member = " + member);
         }
+    }
+
+    @Test
+    public void paging() {
+        // given
+        memberRepository.save(new Member("member 1", 10));
+        memberRepository.save(new Member("member 2", 10));
+        memberRepository.save(new Member("member 3", 10));
+        memberRepository.save(new Member("member 4", 10));
+        memberRepository.save(new Member("member 5", 10));
+
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.Direction.DESC, "username");
+
+        int age = 10;
+        int offset = 0;
+        int limit = 3;
+        // when
+
+        Page<Member> pagedMember = memberRepository.findByAge(age, pageRequest);
+
+        List<Member> content = pagedMember.getContent();
+        long totalElements = pagedMember.getTotalElements();
+
+        for (Member member : content) {
+            System.out.println("member = " + member);
+        }
+
+        System.out.println(totalElements);
+
+        assertEquals(content.size(), 3);
+        assertEquals(pagedMember.getTotalElements(), 5);
+        assertEquals(pagedMember.getNumber(), 0);
+        assertEquals(pagedMember.getTotalPages(), 2);
+        assertEquals(pagedMember.isFirst(), true);
+        assertEquals(pagedMember.hasNext(), true);
     }
 }
