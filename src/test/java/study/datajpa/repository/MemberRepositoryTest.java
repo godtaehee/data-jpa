@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
@@ -19,6 +21,7 @@ import study.datajpa.entity.Team;
 
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 class MemberRepositoryTest {
 
     @Autowired
@@ -172,6 +175,36 @@ class MemberRepositoryTest {
         assertEquals(pagedMember.getTotalElements(), 5);
         assertEquals(pagedMember.getNumber(), 0);
         assertEquals(pagedMember.getTotalPages(), 2);
+        assertEquals(pagedMember.isFirst(), true);
+        assertEquals(pagedMember.hasNext(), true);
+    }
+
+    @Test
+    public void slicePaging() {
+        // given
+        memberRepository.save(new Member("member 1", 10));
+        memberRepository.save(new Member("member 2", 10));
+        memberRepository.save(new Member("member 3", 10));
+        memberRepository.save(new Member("member 4", 10));
+        memberRepository.save(new Member("member 5", 10));
+
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.Direction.DESC, "username");
+
+        int age = 10;
+        int offset = 0;
+        int limit = 3;
+        // when
+
+        Slice<Member> pagedMember = memberRepository.findSliceByAge(age, pageRequest);
+
+        List<Member> content = pagedMember.getContent();
+
+        for (Member member : content) {
+            System.out.println("member = " + member);
+        }
+
+        assertEquals(content.size(), 3);
+        assertEquals(pagedMember.getNumber(), 0);
         assertEquals(pagedMember.isFirst(), true);
         assertEquals(pagedMember.hasNext(), true);
     }
