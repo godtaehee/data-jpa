@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
@@ -18,6 +19,9 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @Test
     public void testMember() {
@@ -70,5 +74,43 @@ class MemberRepositoryTest {
 
         assertEquals(userByUsernameAndAge.getUsername(), "Member 1");
         assertEquals(userByUsernameAndAge.getAge(), 20);
+    }
+
+    @Test
+    public void testFindUserName() {
+        Member member1 = new Member("Member 1", 20);
+        Member member2 = new Member("Member 2", 20);
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        List<String> userName = memberRepository.findUserName();
+        System.out.println("userName");
+        System.out.println(userName);
+
+        for (String username : userName) {
+            System.out.println(username);
+        }
+    }
+
+    @Test
+    public void testFindMemberDto() {
+        Team team1 = new Team("Team 1");
+        Team team2 = new Team("Team 2");
+
+        teamRepository.save(team1);
+        teamRepository.save(team2);
+
+        Member member1 = new Member("Member 1", 20, team1);
+        Member member2 = new Member("Member 2", 20, team2);
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        List<MemberDto> memberDtos = memberRepository.findMemberDto();
+
+        for (MemberDto memberDto : memberDtos) {
+            System.out.println(memberDto);
+        }
     }
 }
