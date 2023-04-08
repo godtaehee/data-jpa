@@ -151,4 +151,15 @@ class MemberJpaRepositoryTest {
 
         assertEquals(byUserNameAndAgeGreaterThen.size(), 1);
     }
+
+    @Test
+    public void namedQuery() {
+        Member member1 = new Member("Member 1", 20);
+
+        memberJpaRepository.save(member1);
+
+        Member foundMember = this.memberJpaRepository.getMemberByUsernameWithNamedQuery("Member 1");
+
+        assertEquals(foundMember.getUsername(), "Member 1");
+    }
 }
