@@ -36,8 +36,21 @@ public class Member {
         this.age = age;
     }
 
+    public Member(Long id, String username, int age, Team team) {
+        this.id = id;
+        this.username = username;
+        this.age = age;
+        this.changeTeam(team);
+    }
+
+    public Member(String username) {
+        this.username = username;
+    }
+
     public void changeTeam(Team team) {
-        this.team = team;
-        team.getMembers().add(this);
+        if (team != null) {
+            this.team = team;
+            team.getMembers().add(this);
+        }
     }
 }
