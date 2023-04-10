@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
@@ -21,7 +20,6 @@ import study.datajpa.entity.Team;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
 class MemberRepositoryTest {
 
     @Autowired
@@ -207,5 +205,24 @@ class MemberRepositoryTest {
         assertEquals(pagedMember.getNumber(), 0);
         assertEquals(pagedMember.isFirst(), true);
         assertEquals(pagedMember.hasNext(), true);
+    }
+
+    @Test
+    public void bulkUpdate() {
+        // given
+        memberRepository.save(new Member("member 1", 10));
+        memberRepository.save(new Member("member 2", 10));
+        memberRepository.save(new Member("member 3", 10));
+        memberRepository.save(new Member("member 4", 10));
+        memberRepository.save(new Member("member 5", 10));
+
+        int result = memberRepository.bulkAgePlus(10);
+
+        Member member = memberRepository.findByUsername("member 5");
+
+        System.out.println("member = " + member);
+
+        assertEquals(result, 5);
+        System.out.println("여기에 오나 ?");
     }
 }
