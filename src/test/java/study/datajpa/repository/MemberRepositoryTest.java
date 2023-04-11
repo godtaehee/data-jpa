@@ -2,6 +2,8 @@ package study.datajpa.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,9 @@ class MemberRepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     public void testMember() {
@@ -213,6 +218,7 @@ class MemberRepositoryTest {
         memberRepository.save(new Member("member 1", 10));
         memberRepository.save(new Member("member 2", 10));
         memberRepository.save(new Member("member 3", 10));
+
         memberRepository.save(new Member("member 4", 10));
         memberRepository.save(new Member("member 5", 10));
 
@@ -224,5 +230,31 @@ class MemberRepositoryTest {
 
         assertEquals(result, 5);
         System.out.println("여기에 오나 ?");
+    }
+
+    @Test
+    void findMemberLazy() {
+        Team teamA = new Team("Team A", "dfsdf");
+        Team teamB = new Team("Team B", "dummy");
+
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamB);
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        System.out.println("여긴듯");
+        List<Member> members = memberRepository.findAll();
+
+        for (Member member : members) {
+            System.out.println("member = " + member);
+            member.getTeam();
+        }
     }
 }

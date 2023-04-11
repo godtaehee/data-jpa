@@ -6,12 +6,10 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = { "id", "username" })
 public class Team {
 
     @Id
@@ -21,10 +19,17 @@ public class Team {
 
     private String name;
 
+    private String dummy;
+
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
     public Team(String name) {
         this.name = name;
+    }
+
+    public Team(String name, String dummy) {
+        this.name = name;
+        this.dummy = dummy;
     }
 }
