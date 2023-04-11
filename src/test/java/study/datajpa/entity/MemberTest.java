@@ -83,5 +83,7 @@ class MemberTest {
 
         System.out.println("member1.create = " + member1.getCreatedDate());
         System.out.println("member1.update = " + member1.getLastModifiedDate());
+        System.out.println("member1.update = " + member1.getCreatedBy());
+        System.out.println("member1.update = " + member1.getLastmodifiedBy());
     }
 }
