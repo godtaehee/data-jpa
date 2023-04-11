@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberCustomRepository {
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
     @Query(name = "Member.findByUsername") // << 이거 없어도 가능함. 가능한 이유는 클래스이름.메소드 이름으로 먼저 찾기때문, 만약에 그걸로 못찾음녀 쿼리메소드로 함
