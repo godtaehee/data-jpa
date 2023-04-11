@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = { "id", "username", "age" })
 @NamedQuery(name = "Member.findByUsername", query = "select m from Member m where m.username = :username")
-public class Member {
+public class Member extends JpaBaseEntity {
 
     @Id
     @GeneratedValue
@@ -53,5 +53,9 @@ public class Member {
             this.team = team;
             team.getMembers().add(this);
         }
+    }
+
+    public void setName(String name) {
+        this.username = name;
     }
 }
