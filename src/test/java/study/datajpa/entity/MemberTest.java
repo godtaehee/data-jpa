@@ -82,6 +82,6 @@ class MemberTest {
         Member member1 = byId.orElse(null);
 
         System.out.println("member1.create = " + member1.getCreatedDate());
-        System.out.println("member1.update = " + member1.getUpdatedDate());
+        System.out.println("member1.update = " + member1.getLastModifiedDate());
     }
 }
